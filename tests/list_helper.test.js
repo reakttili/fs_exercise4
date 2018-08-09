@@ -21,17 +21,30 @@ describe('Total likes', () => {
 })
 
 describe('favoriteBlog', () => {
-  const fav = listHelper.favoriteBlog(blogs)
-  expect(fav).toEqual(blogs[2])
+  test('Find favorite', () => {
+    const fav = listHelper.favoriteBlog(blogs)
+    expect(fav).toEqual(blogs[2])
+  })
 })
 
-describe.only('mostBlogs', () => {
-  const most = listHelper.mostBlogs(blogs)
-  const shouldbe = {
-    author: "Robert C. Martin",
-    blogs: 3
-  }
-  expect(most).toEqual(shouldbe)
+describe('mostBlogs', () => {
+  test('Most blogs', () => {
+    const most = listHelper.mostBlogs(blogs)
+    const shouldbe = {
+      author: 'Robert C. Martin',
+      blogs: 3
+    }
+    expect(most).toEqual(shouldbe)
+  })
+})
 
-  
+describe('mostLikes', () => {
+  test('Most blogs', () => {
+    const most = listHelper.mostLikes(blogs)
+    const shouldbe ={
+      author: 'Edsger W. Dijkstra',
+      likes: 17
+    }
+    expect(most).toEqual(shouldbe)
+  })
 })

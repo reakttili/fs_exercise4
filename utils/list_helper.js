@@ -52,7 +52,24 @@ const mostBlogs = (blogs) => {
 }
 
 const mostLikes = (blogs) => {
+  let dict = {}
+  blogs.forEach(blog => {
+    if (!dict[blog.author]) {
+      dict[blog.author] = blog.likes
+    } else {
+      dict[blog.author] +=blog.likes
+    }
+  })
 
+  let currentMax = 0
+  let currentAuthor
+  Object.keys(dict).forEach((key) => {
+    if (dict[key] > currentMax) {
+      currentAuthor = key
+      currentMax = dict[key]
+    }
+  })
+  return { 'author':currentAuthor, 'likes': dict[currentAuthor] }
 }
 
 module.exports = {

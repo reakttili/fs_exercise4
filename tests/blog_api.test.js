@@ -1,15 +1,30 @@
 const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
-const Blog = require('../models/Blog')
-const { initialBlogs } = require('./test_helper')
+const Blog = require('../models/blog')
+const { blogs } = require('./test_helper')
 
 
 describe('when there is initially some blogs saved', async () => {
   beforeAll(async () => {
+    const initialBlogs = blogs
     await Blog.remove({})
     const noteObjects = initialBlogs.map(b => new Blog(b))
     await Promise.all(noteObjects.map(b => b.save()))
+  })
+
+  test('notes are returned as json', async () => {
+    const initialBlogs = blogs
+    const response = await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    expect(response.body.length).toBe(initialBlogs.length)
+    const returnedContents = response.body.map(n => n.content)
+    initialBlogs.forEach(note => {
+      console.log(note)
+      expect(returnedContents).toContain(note.content)
+    })
   })
 
   // test('all notes are returned as json by GET /api/notes', async () => {

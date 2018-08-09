@@ -17,7 +17,7 @@ describe('when there is initially some blogs saved', async () => {
     const initialBlogs = blogs
     const response = await api
       .get('/api/blogs')
-      .expect(200)
+      .expect(200) 
       .expect('Content-Type', /application\/json/)
     expect(response.body.length).toBe(initialBlogs.length)
     const returnedContents = response.body.map(n => n.content)
@@ -25,6 +25,21 @@ describe('when there is initially some blogs saved', async () => {
       console.log(note)
       expect(returnedContents).toContain(note.content)
     })
+  })
+
+  test('Test posting', async () => {
+    const newBlog = {
+      title: 'FPGA',
+      author: 'Young Chan',
+      url: 'https://fpga.com/',
+      likes: 3
+    }
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    expect(response.body.title).toEqual(newBlog.title)
   })
 
   // test('all notes are returned as json by GET /api/notes', async () => {

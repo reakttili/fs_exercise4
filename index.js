@@ -4,12 +4,13 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const blogRouter = require('./controllers/blog')
+const config = require('./utils/config')
+
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use('/api/blogs', blogRouter)
 
-const PORT = 3003
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.port, () => {
+  console.log(`Server running on port ${config.port}`)
 })

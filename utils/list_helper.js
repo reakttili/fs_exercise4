@@ -25,6 +25,36 @@ const favoriteBlog = (blogs) => {
 
 }
 
+const mostBlogs = (blogs) => {
+  // let allAuthors = blogs.map(blog => blog.author)
+  // let uniqueAuthours = allAuthors.filter((author, index) => {
+  //   return allAuthors.indexOf(author) === index
+  // })
+
+  let dict = {}
+  blogs.forEach(blog => {
+    if (!dict[blog.author]) {
+      dict[blog.author] = 1
+    } else {
+      dict[blog.author] +=1
+    }
+  })
+
+  let currentMax = 0
+  let currentAuthor
+  Object.keys(dict).forEach((key) => {
+    if (dict[key] > currentMax) {
+      currentAuthor = key
+      currentMax = dict[key]
+    }
+  })
+  return { 'author':currentAuthor, 'blogs': dict[currentAuthor] }
+}
+
+const mostLikes = (blogs) => {
+
+}
+
 module.exports = {
-  dummy, totalLikes, favoriteBlog
+  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }

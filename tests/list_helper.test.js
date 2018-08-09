@@ -24,3 +24,14 @@ describe('favoriteBlog', () => {
   const fav = listHelper.favoriteBlog(blogs)
   expect(fav).toEqual(blogs[2])
 })
+
+describe.only('mostBlogs', () => {
+  const most = listHelper.mostBlogs(blogs)
+  const shouldbe = {
+    author: "Robert C. Martin",
+    blogs: 3
+  }
+  expect(most).toEqual(shouldbe)
+
+  
+})

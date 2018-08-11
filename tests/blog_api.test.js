@@ -8,10 +8,11 @@ const { blogs,blogsInDb } = require('./test_helper')
 //https://jestjs.io/docs/en/expect
 // toContain
 // toCotainEqual
+// beforeEach vs beforeAll
 
 
 describe('when there is initially some blogs saved', async () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     const initialBlogs = blogs
     await Blog.remove({})
     const noteObjects = initialBlogs.map(b => new Blog(b))
@@ -27,7 +28,7 @@ describe('when there is initially some blogs saved', async () => {
     expect(response.body.length).toBe(initialBlogs.length)
     const returnedContents = response.body.map(n => n.content)
     initialBlogs.forEach(note => {
-      console.log(note)
+      //console.log(note)
       expect(returnedContents).toContain(note.content)
     })
   })
@@ -62,9 +63,27 @@ describe('when there is initially some blogs saved', async () => {
       .expect('Content-Type', /application\/json/)
     const blogsAfterPost = await blogsInDb()
     const newblog = await blogsAfterPost.find(blog => blog.title==='FPGA')
-    console.log(newblog)
+    //console.log(newblog)
     expect(newblog.likes).toEqual(0)
   })
+  test('Bad request post', async () => {
+    // Note: three separate tests should be done, but hope it is not necassary?
+    let blogsAtStart = await blogsInDb()
+    let newBlog = {
+      //title: 'FPGA',
+      author: 'Young Chan',
+      //url: 'https://fpga.com/',
+      likes: 5
+    }
+    let response = await api
+      .post('/api/blogs')
+      .send(newBlog)  //Note: send function!
+      .expect(400)    // Bad request 
+      .expect('Content-Type', /application\/json/)
+    let blogsAfterPost = await blogsInDb()
+  })
+
+  
 
   // test('all notes are returned as json by GET /api/notes', async () => {
   //   const notesInDatabase = await notesInDb()

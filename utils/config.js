@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== 'production') {
-  console.log("Not production!")
+  //console.log("Not production!")
   require('dotenv').config()
 }
 

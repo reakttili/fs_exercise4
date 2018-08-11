@@ -31,10 +31,8 @@ describe('when there is initially some blogs saved', async () => {
       expect(returnedContents).toContain(note.content)
     })
   })
-
-  test('Test posting', async () => {
+  test('Basic post test', async () => {
     let blogsAtStart = await blogsInDb()
-    
     const newBlog = {
       title: 'FPGA',
       author: 'Young Chan',
@@ -46,15 +44,26 @@ describe('when there is initially some blogs saved', async () => {
       .send(newBlog)  //Note: send function!
       .expect(201)
       .expect('Content-Type', /application\/json/)
-    
-
     const blogsAfterPost = await blogsInDb()
     expect(response.body.title).toEqual(newBlog.title)
     expect(blogsAfterPost.length).toBe(blogsAtStart.length + 1)
-
-
-    console.log(blogsAfterPost)
-    
+  })
+  test('Likes missing', async () => {
+    let blogsAtStart = await blogsInDb()
+    const newBlog = {
+      title: 'FPGA',
+      author: 'Young Chan',
+      url: 'https://fpga.com/',
+    }
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)  //Note: send function!
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const blogsAfterPost = await blogsInDb()
+    const newblog = await blogsAfterPost.find(blog => blog.title==='FPGA')
+    console.log(newblog)
+    expect(newblog.likes).toEqual(0)
   })
 
   // test('all notes are returned as json by GET /api/notes', async () => {

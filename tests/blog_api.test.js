@@ -2,7 +2,12 @@ const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
 const Blog = require('../models/blog')
-const { blogs } = require('./test_helper')
+const { blogs,blogsInDb } = require('./test_helper')
+
+//npx jest -t 'Test postin'
+//https://jestjs.io/docs/en/expect
+// toContain
+// toCotainEqual
 
 
 describe('when there is initially some blogs saved', async () => {
@@ -28,6 +33,8 @@ describe('when there is initially some blogs saved', async () => {
   })
 
   test('Test posting', async () => {
+    let blogsAtStart = await blogsInDb()
+    
     const newBlog = {
       title: 'FPGA',
       author: 'Young Chan',
@@ -36,10 +43,18 @@ describe('when there is initially some blogs saved', async () => {
     }
     const response = await api
       .post('/api/blogs')
-      .send(newBlog)
-      .expect(200)
+      .send(newBlog)  //Note: send function!
+      .expect(201)
       .expect('Content-Type', /application\/json/)
+    
+
+    const blogsAfterPost = await blogsInDb()
     expect(response.body.title).toEqual(newBlog.title)
+    expect(blogsAfterPost.length).toBe(blogsAtStart.length + 1)
+
+
+    console.log(blogsAfterPost)
+    
   })
 
   // test('all notes are returned as json by GET /api/notes', async () => {

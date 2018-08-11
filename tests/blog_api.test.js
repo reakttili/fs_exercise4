@@ -82,6 +82,16 @@ describe('when there is initially some blogs saved', async () => {
       .expect('Content-Type', /application\/json/)
     let blogsAfterPost = await blogsInDb()
   })
+  test('Delete test', async () => {
+    // Note: three separate tests should be done, but hope it is not necassary?
+    let blogsAtStart = await blogsInDb()
+    console.log(blogsAtStart)
+    let response = await api
+      .delete('/api/blogs/5a422a851b54a676234d17f7')
+      .expect(204)    
+    let blogsAfterDelete = await blogsInDb()
+    expect(blogsAfterDelete).not.toContainEqual(blogsAtStart[0])
+  })
 
   
 

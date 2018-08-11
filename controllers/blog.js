@@ -13,6 +13,15 @@ blogRouter.get('/', (request, response) => {
     })
 })
 
+blogRouter.delete('/:id', async (request, response) => {
+  try {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  } catch (exception) {
+    response.status(400).json({ error: 'malformatted id' })
+  }
+})
+
 blogRouter.post('/', (request, response) => {
   const blog = new Blog(request.body)
 

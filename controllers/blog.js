@@ -1,5 +1,6 @@
 const blogRouter = require('express').Router()
 const Blog = require('./../models/blog')
+const User = require('./../models/user')
 
 blogRouter.get('/', (request, response) => {
   Blog
@@ -26,7 +27,6 @@ blogRouter.put('/:id', async (request, response) => {
 })
 
 blogRouter.delete('/:id', async (request, response) => {
-  console.log("@Delete")
   try {
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
@@ -35,22 +35,22 @@ blogRouter.delete('/:id', async (request, response) => {
   }
 })
 
-blogRouter.post('/', (request, response) => {
-  const blog = new Blog(request.body)
-
-  if (!blog.likes) {
-    blog.likes = 0
+blogRouter.post('/', async (request, response) => {
+  try {
+    const blog = new Blog(request.body)
+    const users = await User.find({})
+    blog.user = users[0]._id
+    if (!blog.likes) {
+      blog.likes = 0
+    }
+    if (!blog.url || !blog.title) {
+      return response.status(400).json({ error: 'content missing' })
+    }
+    const saved = await blog.save()
+    response.status(201).json(Blog.formatBlog(saved))
+  } catch (exception) {
+    console.log(exception)
   }
-  if (!blog.url || !blog.title) {
-    return response.status(400).json({ error: 'content missing' })
-  }
-
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-    .catch(error => {console.log(error)})
 })
 
 module.exports = blogRouter

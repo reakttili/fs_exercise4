@@ -34,6 +34,17 @@ describe('when there is initially some blogs saved', async () => {
     })
   })
   test('Basic post test', async () => {
+
+    const newUser = {
+      username: 'VB',
+      name: 'Ville',
+      password: 'salis'
+      //passwordHash: String,
+      //adult: Boolean,
+      //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+    }
+    await api.post('/api/users').send(newUser) // Test user
+
     let blogsAtStart = await blogsInDb()
     const newBlog = {
       title: 'FPGA',
@@ -51,6 +62,16 @@ describe('when there is initially some blogs saved', async () => {
     expect(blogsAfterPost.length).toBe(blogsAtStart.length + 1)
   })
   test('Likes missing', async () => {
+    const newUser = {
+      username: 'VB',
+      name: 'Ville',
+      password: 'salis'
+      //passwordHash: String,
+      //adult: Boolean,
+      //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+    }
+    await api.post('/api/users').send(newUser) // Test user
+
     let blogsAtStart = await blogsInDb()
     const newBlog = {
       title: 'FPGA',
@@ -68,6 +89,16 @@ describe('when there is initially some blogs saved', async () => {
     expect(newblog.likes).toEqual(0)
   })
   test('Bad request post', async () => {
+    const newUser = {
+      username: 'VB',
+      name: 'Ville',
+      password: 'salis'
+      //passwordHash: String,
+      //adult: Boolean,
+      //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+    }
+    await api.post('/api/users').send(newUser) // Test user
+
     // Note: three separate tests should be done, but hope it is not necassary?
     let blogsAtStart = await blogsInDb()
     let newBlog = {

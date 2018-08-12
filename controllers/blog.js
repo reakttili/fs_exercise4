@@ -52,6 +52,9 @@ blogRouter.post('/', async (request, response) => {
       return response.status(400).json({ error: 'content missing' })
     }
     const saved = await blog.save()
+    users[0].blogs = users[0].blogs.concat(saved._id)
+    await users[0].save()
+
     response.status(201).json(Blog.formatBlog(saved))
   } catch (exception) {
     console.log(exception)

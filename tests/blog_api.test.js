@@ -208,6 +208,56 @@ describe('when there is initially some blogs saved', async () => {
       const users = await User.find({})
       expect(users.length).toEqual(0)
     })
+
+    test('Add blog with user', async () => {
+      //let blogsAtStart = await usersInDb()
+
+      const newUser = {
+        username: 'VB',
+        name: 'Ville',
+        password: 'sss'
+        //passwordHash: String,
+        //adult: Boolean,
+        //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+      }
+      await api.post('/api/users').send(newUser)
+      let users = await usersInDb()
+      let newBlog = {
+        title: 'FPGA',
+        author: 'Young Chan',
+        url: 'https://fpga.com/',
+        likes: 5
+      }
+      let response = await api
+        .post('/api/blogs')
+        .send(newBlog)  //Note: send function!
+        .expect(201)
+      let blogsAfterPost = await blogsInDb()
+
+      // One blog should be printed correctly with user:
+      response = await api
+        .get('/api/users')
+        .expect(200) 
+        .expect('Content-Type', /application\/json/)
+      console.log(response.text)
+
+      // User can be seen with blog
+      response = await api
+        .get('/api/blogs')
+        .expect(200) 
+        .expect('Content-Type', /application\/json/)
+      console.log(response.text)
+
+
+
+
+
+      //console.log(response)
+      //console.log(blogsAfterPost)
+           
+    })
+
+
   })
   afterAll(() => {
     console.log('Close the server.')

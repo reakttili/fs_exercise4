@@ -247,16 +247,60 @@ describe('when there is initially some blogs saved', async () => {
         .expect(200) 
         .expect('Content-Type', /application\/json/)
       console.log(response.text)
-
-
-
-
-
-      //console.log(response)
-      //console.log(blogsAfterPost)
-           
+ 
     })
 
+    test('Login test', async () => {
+      // Create a user
+      const newUser = {
+        username: 'vb',
+        name: 'Ville',
+        password: 'salis'
+        //passwordHash: String,
+        //adult: Boolean,
+        //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+      }
+      await api.post('/api/users').send(newUser)
+
+      // Get token
+      let response = await api
+        .post('/api/login')
+        .send(newUser)
+        .expect(200)
+
+
+
+      console.log(response.body)
+
+
+
+      // let users = await usersInDb()
+      // let newBlog = {
+      //   title: 'FPGA',
+      //   author: 'Young Chan',
+      //   url: 'https://fpga.com/',
+      //   likes: 5
+      // }
+      // let response = await api
+      //   .post('/api/blogs')
+      //   .send(newBlog)  //Note: send function!
+      //   .expect(201)
+      // let blogsAfterPost = await blogsInDb()
+
+      // // One blog should be printed correctly with user:
+      // response = await api
+      //   .get('/api/users')
+      //   .expect(200) 
+      //   .expect('Content-Type', /application\/json/)
+      // console.log(response.text)
+
+      // // User can be seen with blog
+      // response = await api
+      //   .get('/api/blogs')
+      //   .expect(200) 
+      //   .expect('Content-Type', /application\/json/)
+      // console.log(response.text)
+    })
 
   })
   afterAll(() => {

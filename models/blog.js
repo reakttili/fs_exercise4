@@ -6,7 +6,8 @@ const BlogSchema = new Schema ({
   title: String,
   author: String,
   url: String,
-  likes: Number
+  likes: Number,
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 // assign a function to the "statics" object of our animalSchema
 BlogSchema.statics.formatBlog = function(blog) {

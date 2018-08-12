@@ -1,8 +1,4 @@
-const mongoose = require('mongoose')
 const blogRouter = require('express').Router()
-require('dotenv').config()
-const mongoUrl =  process.env.MONGODB_URI
-mongoose.connect(mongoUrl)
 const Blog = require('./../models/blog')
 
 blogRouter.get('/', (request, response) => {
@@ -13,7 +9,24 @@ blogRouter.get('/', (request, response) => {
     })
 })
 
+blogRouter.put('/:id', async (request, response) => {
+  try {
+    // Todo: implement so that change in schema doesn't matter!
+    const updatedBlog = {
+      title: request.body.title,
+      author: request.body.author,
+      url: request.body.url,
+      likes: request.body.likes
+    }
+    const upBlog = await Blog.findByIdAndUpdate(request.params.id, updatedBlog, { new: true } )
+    response.json(Blog.formatBlog(upBlog))
+  } catch (exception) {
+    response.status(400).json({ error: 'malformatted id' })
+  }
+})
+
 blogRouter.delete('/:id', async (request, response) => {
+  console.log("@Delete")
   try {
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()

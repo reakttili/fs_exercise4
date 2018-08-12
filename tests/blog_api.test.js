@@ -288,7 +288,7 @@ describe('when there is initially some blogs saved', async () => {
         .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZCIiwiaWQiOiI1YjcwNjA4ZTI4M2ExZTJiZmMwNzdlOGMiLCJpYXQiOjE1MzQwOTE3MTF9.viUydTOl4vgfvWYEHbxyS0Yerblk35C9EQFbHWOw91M')
         .send(newBlog)
         .expect(201)
-      //console.log(response.body)
+      console.log(response.body)
 
       
 

@@ -267,11 +267,24 @@ describe('when there is initially some blogs saved', async () => {
         .post('/api/login')
         .send(newUser)
         .expect(200)
-
-
-
       console.log(response.body)
 
+      // Now post blog 
+      // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w
+      let newBlog = {
+        title: 'FPGA2',
+        author: 'Young Chan2',
+        url: 'https://fpga.com/2',
+        likes: 5
+      }
+      response = await api
+        .post('/api/blogs')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
+        .send(newBlog)
+        .expect(201)
+      console.log(response.body)
+
+      
 
 
       // let users = await usersInDb()

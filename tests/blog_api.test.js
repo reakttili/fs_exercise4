@@ -2,7 +2,8 @@ const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
 const Blog = require('../models/blog')
-const { blogs,blogsInDb } = require('./test_helper')
+const User = require('../models/user')
+const { blogs,blogsInDb, usersInDb } = require('./test_helper')
 
 //npx jest -t 'Test postin'
 //https://jestjs.io/docs/en/expect
@@ -16,6 +17,7 @@ describe('when there is initially some blogs saved', async () => {
     await Blog.remove({})
     const noteObjects = initialBlogs.map(b => new Blog(b))
     await Promise.all(noteObjects.map(b => b.save()))
+    await User.remove({})
   })
 
   test('notes are returned as json', async () => {
@@ -101,6 +103,37 @@ describe('when there is initially some blogs saved', async () => {
     let blogsAfter = await blogsInDb()
     const updated = blogsAfter.find(blog => { return blog.title === 'React patterns'} )
     expect(updated.likes).toEqual(24)
+  })
+
+  // Laajenna käyttäjätunnusten luomista siten, että salasanan tulee olla vähintään 3 
+  // merkkiä pitkä ja käyttäjätunnus on järjestelmässä uniikki. 
+  // Jos täysi-ikäisyydelle ei määritellä luotaessa arvoa, on se oletusarvoisesti true.
+  // Luomisoperaation tulee palauttaa sopiva statuskoodi ja kuvaava virheilmoitus, 
+  // jos yritetään luoda epävalidi käyttäjä.
+  // Tee testit, jotka varmistavat, että virheellisiä käyttäjiä ei luoda, 
+  // ja että virheellisen käyttäjän luomisoperaatioon vastaus on järkevä 
+  // statuskoodin ja virheilmoituksen osalta.
+
+  test('Add user', async () => {
+    //let blogsAtStart = await usersInDb()
+
+    const newUser = {
+      username: 'VB',
+      name: 'Ville',
+      password: 'salis'
+      //passwordHash: String,
+      //adult: Boolean,
+      //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+    }
+    const response = await api
+      .post('/api/users')
+      .send(newUser)  //Note: send function!
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    const usersAfterPost = await blogsInDb()
+    console.log(usersAfterPost)
+    //expect(response.body.title).toEqual(newBlog.title)
+    //expect(blogsAfterPost.length).toBe(blogsAtStart.length + 1)
   })
   
   afterAll(() => {

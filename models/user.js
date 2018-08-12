@@ -8,12 +8,13 @@ const userSchema = new mongoose.Schema({
   notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
 })
 
-userSchema.statics.format = (user) => {
+userSchema.statics.formatUser = (user) => {
   return {
     id: user.id,
     username: user.username,
     name: user.name,
-    notes: user.notes
+    notes: user.notes,
+    adult: user.adult
   }
 }
 

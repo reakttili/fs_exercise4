@@ -1,15 +1,49 @@
 const mongoose = require('mongoose')
 const userRouter = require('express').Router()
 const User = require('./../models/user')
-require('dotenv').config()
-const mongoUrl =  process.env.MONGODB_URI
-mongoose.connect(mongoUrl)
 const Blog = require('./../models/blog')
+const bcrypt = require('bcrypt')
 
-userRouter.post('/',(request, response) => {
-  console.log("posted a user!")
-  response.status(200).end()
-  // Tehdään tietokanta, johon käyttäjä tallennetaan!
+userRouter.post('/', async (request, response) => {
+  try {
+    const saltRounds = 7
+    const password = request.body.password
+    if (password.length < 3) {
+      return response.status(400).json({ error: 'Too short password' })
+    }
+    const users = await User.find({ username: request.body.username })
+    if (users.length > 0) {
+      return response.status(400).json({ error: 'Username exists' })
+    }
+    let bIsAdult = false
+    if (!response.body.adult) {
+      bIsAdult = true
+    } else {
+      bIsAdult = response.boy.adult
+    }
+    const passwordHash = await bcrypt.hash(password,saltRounds)
+    const user = new User({
+      username: request.body.username,
+      name: request.body.name,
+      passwordHash,
+      adult: bIsAdult
+    })
+    const savedUser = await user.save()
+    response.json(User.formatUser(savedUser))
+  } catch (exception) {
+    console.log(exception)
+    response.status(500).json({ error: 'Error' })
+  }
+})
+
+userRouter.get('/', async (request, response) => {
+  try {
+    const users = await User.find({})
+    response.json(users.map(User.formatUser))
+  } catch (exception) {
+    console.log(exception)
+    response.status(500).json({ error: 'Error' })
+  }
 })
 
 module.exports = userRouter

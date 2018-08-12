@@ -119,14 +119,15 @@ describe('when there is initially some blogs saved', async () => {
     let blogsAfterPost = await blogsInDb()
   })
  
-  test('Delete test', async () => {
-    let blogsAtStart = await blogsInDb()
-    let response = await api
-      .delete('/api/blogs/5a422bc61b54a676234d17fc')
-      .expect(204)
-    let blogsAfterDelete = await blogsInDb()
-    expect(blogsAfterDelete).not.toContainEqual(blogsAtStart[6]) // Not  good way. Change so that others test have no effect
-  })
+  // Note: old test
+  // test('Delete test', async () => {
+  //   let blogsAtStart = await blogsInDb()
+  //   let response = await api
+  //     .delete('/api/blogs/5a422bc61b54a676234d17fc')
+  //     .expect(204)
+  //   let blogsAfterDelete = await blogsInDb()
+  //   expect(blogsAfterDelete).not.toContainEqual(blogsAtStart[6]) // Not  good way. Change so that others test have no effect
+  // })
 
   test('Update test', async () => {
     let blogsAtStart = await blogsInDb()

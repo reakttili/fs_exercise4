@@ -55,6 +55,7 @@ describe('when there is initially some blogs saved', async () => {
     }
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
       .send(newBlog)  //Note: send function!
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -81,6 +82,7 @@ describe('when there is initially some blogs saved', async () => {
     }
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
       .send(newBlog)  //Note: send function!
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -110,6 +112,7 @@ describe('when there is initially some blogs saved', async () => {
     }
     let response = await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
       .send(newBlog)  //Note: send function!
       .expect(400)    // Bad request 
       .expect('Content-Type', /application\/json/)
@@ -230,6 +233,7 @@ describe('when there is initially some blogs saved', async () => {
       }
       let response = await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
         .send(newBlog)  //Note: send function!
         .expect(201)
       let blogsAfterPost = await blogsInDb()
@@ -262,12 +266,16 @@ describe('when there is initially some blogs saved', async () => {
       }
       await api.post('/api/users').send(newUser)
 
+      let uindb = await usersInDb()
+      console.log("LOG CURRENT USERS")
+      console.log(uindb)
+
       // Get token
       let response = await api
         .post('/api/login')
         .send(newUser)
         .expect(200)
-      console.log(response.body)
+      //console.log(response.body)
 
       // Now post blog 
       // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w
@@ -282,7 +290,7 @@ describe('when there is initially some blogs saved', async () => {
         .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
         .send(newBlog)
         .expect(201)
-      console.log(response.body)
+      //console.log(response.body)
 
       
 

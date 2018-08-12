@@ -255,28 +255,6 @@ describe('when there is initially some blogs saved', async () => {
     })
 
     test('Login test', async () => {
-      // Create a user
-      const newUser = {
-        username: 'vb',
-        name: 'Ville',
-        password: 'salis'
-        //passwordHash: String,
-        //adult: Boolean,
-        //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
-      }
-      await api.post('/api/users').send(newUser)
-
-      let uindb = await usersInDb()
-      
-      // Get token
-      let response = await api
-        .post('/api/login')
-        .send(newUser)
-        .expect(200)
-      //console.log(response.body)
-
-      // Now post blog 
-      // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w
       let newBlog = {
         title: 'FPGA2',
         author: 'Young Chan2',
@@ -289,36 +267,33 @@ describe('when there is initially some blogs saved', async () => {
         .send(newBlog)
         .expect(201)
       console.log(response.body)
+    })
 
-      
+    test('Delete test II', async () => {
+      let newBlog = {
+        title: 'FPGA2',
+        author: 'Young Chan2',
+        url: 'https://fpga.com/2',
+        likes: 5
+      }
+      let response = await api
+        .post('/api/blogs')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZCIiwiaWQiOiI1YjcwNjA4ZTI4M2ExZTJiZmMwNzdlOGMiLCJpYXQiOjE1MzQwOTE3MTF9.viUydTOl4vgfvWYEHbxyS0Yerblk35C9EQFbHWOw91M')
+        .send(newBlog)
+        .expect(201)
+      let id = response.body.id
+      console.log('ID TO REMOVE', id)
+      // With wrong auth delete should not owrk
+      response = await api
+        .delete(`/api/blogs/${id}`)
+        .set('Authorization', 'bearer ayJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZCIiwiaWQiOiI1YjcwNjA4ZTI4M2ExZTJiZmMwNzdlOGMiLCJpYXQiOjE1MzQwOTE3MTF9.viUydTOl4vgfvWYEHbxyS0Yerblk35C9EQFbHWOw91M')
+        .expect(401)
 
-
-      // let users = await usersInDb()
-      // let newBlog = {
-      //   title: 'FPGA',
-      //   author: 'Young Chan',
-      //   url: 'https://fpga.com/',
-      //   likes: 5
-      // }
-      // let response = await api
-      //   .post('/api/blogs')
-      //   .send(newBlog)  //Note: send function!
-      //   .expect(201)
-      // let blogsAfterPost = await blogsInDb()
-
-      // // One blog should be printed correctly with user:
-      // response = await api
-      //   .get('/api/users')
-      //   .expect(200) 
-      //   .expect('Content-Type', /application\/json/)
-      // console.log(response.text)
-
-      // // User can be seen with blog
-      // response = await api
-      //   .get('/api/blogs')
-      //   .expect(200) 
-      //   .expect('Content-Type', /application\/json/)
-      // console.log(response.text)
+      // Now delete should work
+      response = await api
+        .delete(`/api/blogs/${id}`)
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZCIiwiaWQiOiI1YjcwNjA4ZTI4M2ExZTJiZmMwNzdlOGMiLCJpYXQiOjE1MzQwOTE3MTF9.viUydTOl4vgfvWYEHbxyS0Yerblk35C9EQFbHWOw91M')
+        .expect(204)
     })
 
   })

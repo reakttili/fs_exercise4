@@ -18,7 +18,7 @@ describe('when there is initially some blogs saved', async () => {
     
     const noteObjects = initialBlogs.map(b => new Blog(b))
     await Promise.all(noteObjects.map(b => b.save()))
-    await User.remove({})
+    await User.remove( { _id : { $ne: '5b70608e283a1e2bfc077e8c' } } )
   })
 
   test('notes are returned as json', async () => {
@@ -55,7 +55,7 @@ describe('when there is initially some blogs saved', async () => {
     }
     const response = await api
       .post('/api/blogs')
-      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
+      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZCIiwiaWQiOiI1YjcwNjA4ZTI4M2ExZTJiZmMwNzdlOGMiLCJpYXQiOjE1MzQwOTE3MTF9.viUydTOl4vgfvWYEHbxyS0Yerblk35C9EQFbHWOw91M')
       .send(newBlog)  //Note: send function!
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -82,7 +82,7 @@ describe('when there is initially some blogs saved', async () => {
     }
     const response = await api
       .post('/api/blogs')
-      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
+      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZCIiwiaWQiOiI1YjcwNjA4ZTI4M2ExZTJiZmMwNzdlOGMiLCJpYXQiOjE1MzQwOTE3MTF9.viUydTOl4vgfvWYEHbxyS0Yerblk35C9EQFbHWOw91M')
       .send(newBlog)  //Note: send function!
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -112,7 +112,7 @@ describe('when there is initially some blogs saved', async () => {
     }
     let response = await api
       .post('/api/blogs')
-      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
+      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZCIiwiaWQiOiI1YjcwNjA4ZTI4M2ExZTJiZmMwNzdlOGMiLCJpYXQiOjE1MzQwOTE3MTF9.viUydTOl4vgfvWYEHbxyS0Yerblk35C9EQFbHWOw91M')
       .send(newBlog)  //Note: send function!
       .expect(400)    // Bad request 
       .expect('Content-Type', /application\/json/)
@@ -153,7 +153,7 @@ describe('when there is initially some blogs saved', async () => {
       //let blogsAtStart = await usersInDb()
 
       const newUser = {
-        username: 'VB',
+        username: 'VBB',
         name: 'Ville',
         password: 'salis'
         //passwordHash: String,
@@ -166,7 +166,7 @@ describe('when there is initially some blogs saved', async () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
       const usersAfterPost = await usersInDb()
-      console.log(usersAfterPost)
+      //console.log(usersAfterPost)
       //expect(response.body.title).toEqual(newBlog.title)
       //expect(blogsAfterPost.length).toBe(blogsAtStart.length + 1)
     })
@@ -209,7 +209,7 @@ describe('when there is initially some blogs saved', async () => {
         .expect(400)
       expect(response.body.error).toEqual('Too short password')
       const users = await User.find({})
-      expect(users.length).toEqual(0)
+      expect(users.length).toEqual(1)
     })
 
     test('Add blog with user', async () => {
@@ -233,7 +233,7 @@ describe('when there is initially some blogs saved', async () => {
       }
       let response = await api
         .post('/api/blogs')
-        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZCIiwiaWQiOiI1YjcwNjA4ZTI4M2ExZTJiZmMwNzdlOGMiLCJpYXQiOjE1MzQwOTE3MTF9.viUydTOl4vgfvWYEHbxyS0Yerblk35C9EQFbHWOw91M')
         .send(newBlog)  //Note: send function!
         .expect(201)
       let blogsAfterPost = await blogsInDb()
@@ -243,14 +243,14 @@ describe('when there is initially some blogs saved', async () => {
         .get('/api/users')
         .expect(200) 
         .expect('Content-Type', /application\/json/)
-      console.log(response.text)
+      //console.log(response.text)
 
       // User can be seen with blog
       response = await api
         .get('/api/blogs')
         .expect(200) 
         .expect('Content-Type', /application\/json/)
-      console.log(response.text)
+      //console.log(response.text)
  
     })
 
@@ -267,9 +267,7 @@ describe('when there is initially some blogs saved', async () => {
       await api.post('/api/users').send(newUser)
 
       let uindb = await usersInDb()
-      console.log("LOG CURRENT USERS")
-      console.log(uindb)
-
+      
       // Get token
       let response = await api
         .post('/api/login')
@@ -287,7 +285,7 @@ describe('when there is initially some blogs saved', async () => {
       }
       response = await api
         .post('/api/blogs')
-        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZiIiwiaWQiOiI1YjcwNTBjZGM0OGM1MzMzMDQ1N2Q4YjMiLCJpYXQiOjE1MzQwODczNzN9.QP2wgyWHQZhj1680UPSiaP3iKgb39LSN-W0fNfJj84w')
+        .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlZCIiwiaWQiOiI1YjcwNjA4ZTI4M2ExZTJiZmMwNzdlOGMiLCJpYXQiOjE1MzQwOTE3MTF9.viUydTOl4vgfvWYEHbxyS0Yerblk35C9EQFbHWOw91M')
         .send(newBlog)
         .expect(201)
       //console.log(response.body)

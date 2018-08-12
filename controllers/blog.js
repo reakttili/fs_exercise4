@@ -52,15 +52,20 @@ blogRouter.post('/', async (request, response) => {
     let decodedToken = null
     try {
       const tokenString = request.headers.authorization.slice(7,)
+      
       decodedToken = jwt.verify(tokenString, process.env.SECRET)
-      console.log(decodedToken)
+          
     } catch (exception) {
       console.log(exception)
       return response.status(401).json({ error: 'token missing or invalid' })
     }
     const blog = new Blog(request.body)
-    const user = await User.findById(decodedToken.id)
-    console.log(user)
+    //console.log("D-token", decodedToken)
+    //console.log("IDfrom",decodedToken.id)
+    const users = await User.find({})
+    //console.log(users)
+    const user = await User.findOne({ _id: decodedToken.id })
+    //console.log(user)
     blog.user = user._id
     if (!blog.likes) {
       blog.likes = 0

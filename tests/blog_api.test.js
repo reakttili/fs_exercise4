@@ -15,6 +15,7 @@ describe('when there is initially some blogs saved', async () => {
   beforeEach(async () => {
     const initialBlogs = blogs
     await Blog.remove({})
+    
     const noteObjects = initialBlogs.map(b => new Blog(b))
     await Promise.all(noteObjects.map(b => b.save()))
     await User.remove({})

@@ -1,9 +1,24 @@
-POST http://localhost:3003/api/blogs
+POST http://localhost:3001/api/blogs
 content-Type: application/json
 
 {
-  "title": "Food",
-  "author": "Anto2n",
-  "url": "URL",
+  "username": "Username",
+  "name": "Name",
+  "title": "title",
+  "url": "http::sivusto",
+  "password": "passawrod",
   "likes": 4
 }
+
+# POST http://localhost:3001/api/blogs
+# content-Type: application/json
+
+# {
+#   "username": "Username",
+#   "name": "Name",
+#   "passwordHash": "passawrod",
+#   "adult": true
+#   //notes: [{ typ
+  
+# }
+

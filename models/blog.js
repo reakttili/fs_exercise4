@@ -12,10 +12,13 @@ const BlogSchema = new Schema ({
 // assign a function to the "statics" object of our animalSchema
 BlogSchema.statics.formatBlog = function(blog) {
   return {
+    id: blog._id,
     title: blog.title,
     author: blog.author,
     url: blog.url,
-    likes: blog.likes
+    likes: blog.likes,
+    user: blog.user
+    
   }}
 const Blog = mongoose.model('Blog', BlogSchema)
 

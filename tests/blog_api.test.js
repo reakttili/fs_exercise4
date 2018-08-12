@@ -113,29 +113,70 @@ describe('when there is initially some blogs saved', async () => {
   // Tee testit, jotka varmistavat, että virheellisiä käyttäjiä ei luoda, 
   // ja että virheellisen käyttäjän luomisoperaatioon vastaus on järkevä 
   // statuskoodin ja virheilmoituksen osalta.
+  describe('User tests', async () => {
+    test('Normal Add', async () => {
+      //let blogsAtStart = await usersInDb()
 
-  test('Add user', async () => {
-    //let blogsAtStart = await usersInDb()
+      const newUser = {
+        username: 'VB',
+        name: 'Ville',
+        password: 'salis'
+        //passwordHash: String,
+        //adult: Boolean,
+        //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+      }
+      const response = await api
+        .post('/api/users')
+        .send(newUser)  //Note: send function!
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+      const usersAfterPost = await usersInDb()
+      console.log(usersAfterPost)
+      //expect(response.body.title).toEqual(newBlog.title)
+      //expect(blogsAfterPost.length).toBe(blogsAtStart.length + 1)
+    })
 
-    const newUser = {
-      username: 'VB',
-      name: 'Ville',
-      password: 'salis'
-      //passwordHash: String,
-      //adult: Boolean,
-      //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
-    }
-    const response = await api
-      .post('/api/users')
-      .send(newUser)  //Note: send function!
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
-    const usersAfterPost = await blogsInDb()
-    console.log(usersAfterPost)
-    //expect(response.body.title).toEqual(newBlog.title)
-    //expect(blogsAfterPost.length).toBe(blogsAtStart.length + 1)
+    test('Existing', async () => {
+      //let blogsAtStart = await usersInDb()
+
+      const newUser = {
+        username: 'VB',
+        name: 'Ville',
+        password: 'salis'
+        //passwordHash: String,
+        //adult: Boolean,
+        //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+      }
+      let response = await api.post('/api/users').send(newUser)  
+      response = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+      expect(response.body.error).toEqual('Username exists')
+      const users = await User.find({})
+      expect(users.length).toEqual(1) // One added
+    })
+    test('Too short password', async () => {
+      //let blogsAtStart = await usersInDb()
+
+      const newUser = {
+        username: 'VB',
+        name: 'Ville',
+        password: 'ss'
+        //passwordHash: String,
+        //adult: Boolean,
+        //notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+      }
+      let response = await api.post('/api/users').send(newUser)  
+      response = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+      expect(response.body.error).toEqual('Too short password')
+      const users = await User.find({})
+      expect(users.length).toEqual(0)
+    })
   })
-  
   afterAll(() => {
     console.log('Close the server.')
     server.close()

@@ -16,7 +16,7 @@ userRouter.post('/', async (request, response) => {
       return response.status(400).json({ error: 'Username exists' })
     }
     let bIsAdult = false
-    if (!response.body.adult) {
+    if (!request.body.adult) {
       bIsAdult = true
     } else {
       bIsAdult = response.boy.adult

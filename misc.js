@@ -1,9 +1,18 @@
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 require('dotenv').config()
 
+const test = async () => {
+  const password = "salis"
+  const passwordHash = await bcrypt.hash(password,7)
+  console.log(passwordHash)
+}
+
+test()
+
 const userForToken = {
-  username: 'VB',
-  id: '5b70608e283a1e2bfc077e8c'
+  username: 'BV',
+  id: '5b76dda250834b29d8e8297e'
 }
 console.log("AT LOGIN, userForTOken", userForToken)
 // Username and password ok
